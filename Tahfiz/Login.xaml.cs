@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using Tahfiz.classes;
 
 namespace Tahfiz
 {
@@ -13,6 +14,12 @@ namespace Tahfiz
         {
             InitializeComponent();
         }
+
+        //
+        // Veriables
+        // 
+        private bool check = false;
+
         //
         // Username TextBox Responce Design
         //
@@ -49,9 +56,38 @@ namespace Tahfiz
         //
         public void login_button_Click(object sender, RoutedEventArgs e)
         {
+            string id = username_textbox.Text;
+            string pass = password_textbox.Password;
             
+            if (id == null || id.Trim().Equals(""))
+            {
+                MessageBox.Show("تأكد من إدخال اسم المستخدم");
+                return;
+            }
+            if (pass == null || pass.Equals(""))
+            {
+                MessageBox.Show("تأكد من إدخال كلمة المرور");
+                return;
+            }
+
+            Model model = Model.getInstance();
+            User user = model.login(id, pass);
+            if (user != null)
+            {
+                check = true;
+            }
+            if (check)
+            {
+                MessageBox.Show("مرحبا بك في البرنامج");
+                this.Hide();
+                new MainWindow().Show();
+            }
+            else
+            {
+                MessageBox.Show("خطأ في اسم المستخدم أو كلمة المرور", "خطأ");
+            }
         }
-        
+
         private void changePassword_button_Click(object sender, RoutedEventArgs e)
         {
             
